@@ -495,6 +495,7 @@ def main():
             elif playagain == 'No' or playagain == 'N':
                 gameon = False
                 print('Goodbye')
+                break
             else:
                 print('Not a valid input')
                 pass
