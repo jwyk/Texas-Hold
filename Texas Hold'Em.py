@@ -4,9 +4,16 @@ import random
 from collections import Counter
 from enum import Enum, auto
 suits = ("Hearts","Diamonds","Clubs","Spades")
-ranks = ("Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Jack","Queen","King","Ace")
-values = {'Two':2, 'Three':3,'Four':4,'Five':5,'Six':6,'Seven':7,'Eight':8,
-        'Nine':9,'Ten':10,'Jack': 11,'Queen':12,'King':13,'Ace': 14}
+ranks = ("Two","Three","Four","Five",
+        "Six","Seven","Eight","Nine",
+        "Ten","Jack","Queen","King","Ace")
+values = {'Two':2, 'Three':3,
+        'Four':4,'Five':5,
+        'Six':6,'Seven':7,
+        'Eight':8,'Nine':9,
+        'Ten':10,'Jack': 11,
+        'Queen':12,'King':13,
+        'Ace': 14}
 
 # %%
 class Card:
@@ -103,13 +110,12 @@ def has2P(clsHand):
 
     assert count != 0
     
-    #NOT IN WIN ORDER(High Card,1pair,3OK,4OK,impossible,2pair,FH)
+    #In order of what count should return(High Card,1pair,3OK,4OK,2pair,FH)
     count_to_message = {
     (1, 1): 0,
     (2, 1): 1,
     (3, 1): 3,
     (4, 1): 7,
-    (5, 1): "impossible",
     (2, 2): 2,
     (3, 2): 6,
     }
@@ -168,9 +174,9 @@ def hasRFlush(highcard,hasSTFlush = False):
 
 def kicker(PlayerHand,CPUHand,strwincondition):
     #function to deal with kickers + pair issues.
-    #If it is a Flush, throw a draw. Because the hands require the 5 cards to be used.
+    #If it is a Flush, throw a draw. Because the hands require the 5 best cards to be used.
     #If it is a Straight, throw a draw. Because if the highest card is the same,
-    #then everything else in the hand must be the same.(Straight Flush exists too)
+    #then everything else in the hand must be the same.(Same for straight flush)
     #If it is a 1 Pair, find the next highest value and compare.
     #If it is a 2 Pair, find the next highest pair and compare, then next highest value.
     #If it is 3OK/4OK, find the next highest value and compare.
@@ -358,19 +364,20 @@ def main():
     the_chips = Chips()
     gameon = True
     #win conditions in order
-    winconditions = {"Royal_Flush":False,"Straight_Flush":False,"Full_House":False,"Four_Of_A_Kind":False,"Flush":False,"Straight":False,
-    "Three_Of_A_Kind":False,"Two_Pair":False}
+    winconditions = {"Royal_Flush":False,"Straight_Flush":False,
+                    "Full_House":False,"Four_Of_A_Kind":False,
+                    "Flush":False,"Straight":False,
+                    "Three_Of_A_Kind":False,"Two_Pair":False}
     #Initialise Deck, Hands
     while gameon:
         print('New round started...')
         kicker.has_been_called = False
         flop = True
         Playing = True
-        the_deck = Deck()
-        the_deck.shuffle()
-        player_hand = Hand()
-        cpu_hand = Hand()
-        #First Draw, Blind, Show Player Hand
+        the_deck = Deck() ; the_deck.shuffle()
+        player_hand = Hand(); cpu_hand = Hand()
+
+        #First Draw, deal Blind, Show Player Hand
         the_chips.blind()
         player_hand.add_card(the_deck.deal_onecard())
         cpu_hand.add_card(the_deck.deal_onecard())
